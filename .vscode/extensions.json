@@ -1,0 +1,6 @@
+{
+  "recommendations": [
+    "hashicorp.terraform",
+    "rebornix.ruby"
+  ]
+}
