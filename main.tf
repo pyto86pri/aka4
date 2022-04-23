@@ -64,6 +64,14 @@ resource "aws_iam_role_policy" "aka4_lambda_role_policy" {
       "Resource": "*",
       "Effect": "Allow",
       "Sid": ""
+    },
+    {
+      "Action": [
+        "sns:Publish"
+      ],
+      "Resource": "*",
+      "Effect": "Allow",
+      "Sid": ""
     }
   ]
 }
@@ -84,6 +92,7 @@ resource "aws_lambda_function" "aka4_refresh_lambda" {
     variables = {
       CORPORATION_ID = var.aka4_corp_id
       SECRET_ID      = var.secret_name
+      TOPIC_ARN      = aws_sns_topic.aka4.arn
     }
   }
 }
@@ -102,6 +111,7 @@ resource "aws_lambda_function" "aka4_punch_lambda" {
     variables = {
       CORPORATION_ID = var.aka4_corp_id
       SECRET_ID      = var.secret_name
+      TOPIC_ARN      = aws_sns_topic.aka4.arn
     }
   }
 }
@@ -125,6 +135,10 @@ resource "aws_secretsmanager_secret_rotation" "aka4_secret_rotation" {
   rotation_rules {
     automatically_after_days = 30
   }
+}
+
+resource "aws_sns_topic" "aka4" {
+  name = "aka4"
 }
 
 resource "aws_ecr_repository" "aka4" {
