@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 require 'date'
-require_relative './token'
-require_relative './aka4'
+require_relative './lib/token'
+require_relative './lib/aka4'
 
 $store = TokenStore.new
 $aka4 = Aka4Client.new
