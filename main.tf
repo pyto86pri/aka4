@@ -18,6 +18,7 @@ variable "secret_name" {
   default = "aka4/token"
 }
 variable "aka4_corp_id" {}
+variable "revision" {}
 
 provider "aws" {
   access_key = var.aws_access_key
@@ -74,7 +75,7 @@ resource "aws_lambda_function" "aka4_refresh_lambda" {
   description   = "Akashi のトークンをリフレッシュする関数"
   role          = aws_iam_role.aka4_lambda_role.arn
   package_type  = "Image"
-  image_uri     = format("%s:%s", aws_ecr_repository.aka4.repository_url, "latest")
+  image_uri     = format("%s:%s", aws_ecr_repository.aka4.repository_url, var.revision)
   image_config {
     command = ["app.LambdaFunction::Handler.refresh"]
   }
@@ -92,7 +93,7 @@ resource "aws_lambda_function" "aka4_punch_lambda" {
   description   = "Akashi で打刻をする関数"
   role          = aws_iam_role.aka4_lambda_role.arn
   package_type  = "Image"
-  image_uri     = format("%s:%s", aws_ecr_repository.aka4.repository_url, "latest")
+  image_uri     = format("%s:%s", aws_ecr_repository.aka4.repository_url, var.revision)
   image_config {
     command = ["app.LambdaFunction::Handler.punch"]
   }
